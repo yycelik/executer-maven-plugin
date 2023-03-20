@@ -44,6 +44,12 @@
         <artifactId>maven-project</artifactId>
         <version>2.2.1</version>
     </dependency>
+
+    <dependency>
+			<groupId>org.apache.sshd</groupId>
+			<artifactId>sshd-core</artifactId>
+			<version>2.9.2</version>
+		</dependency>
   </dependencies>
 
   <build>
