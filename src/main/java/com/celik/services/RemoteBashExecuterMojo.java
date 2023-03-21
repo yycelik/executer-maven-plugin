@@ -14,8 +14,8 @@ import com.celik.model.SshConnection;
 import com.celik.model.SshResponse;
 import com.celik.model.SshTimeoutException;
 
-@Mojo(name = "remote-code-executer", defaultPhase = LifecyclePhase.COMPILE)
-public class RemoteCodeExecuterMojo extends AbstractMojo {
+@Mojo(name = "remote-bash-executer", defaultPhase = LifecyclePhase.COMPILE)
+public class RemoteBashExecuterMojo extends AbstractMojo {
     @Parameter(defaultValue = "${hostname}", required = true)
     String hostname;
 
@@ -31,13 +31,16 @@ public class RemoteCodeExecuterMojo extends AbstractMojo {
     @Parameter(defaultValue = "${timeout}", required = false)
     long timeout = 100;
 
-    @Parameter(defaultValue = "${cmd}", required = false)
-    String cmd = "cmd";
+    @Parameter(defaultValue = "${source}", required = false)
+    String source = "conf\\deploy.sh";
+
+    @Parameter(defaultValue = "${destination}", required = false)
+    String destination = "/tmp";
     
     public void execute() throws MojoExecutionException, MojoFailureException {
         SshConnection conn = new SshConnection(username, password, hostname, port);
         try {
-            SshResponse res = SshUtils.runCommand(conn, cmd, timeout);
+            SshResponse res = SshUtils.runBash(conn, source, destination, timeout);
 
             getLog().info("err: " + res.getErrOutput());
             getLog().info("return: " + res.getReturnCode());
